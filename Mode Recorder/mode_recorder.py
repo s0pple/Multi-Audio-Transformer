@@ -9,6 +9,13 @@ import numpy as np
 from pydub import AudioSegment
 import sounddevice as sd
 from packaging import version
+from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/")
+def read_root():
+    return {"message": "Mode Recorder API is running!"}
 
 # Version requirements
 REQUIRED_VERSIONS = {
