@@ -1,0 +1,17 @@
+# Git files
+.git
+.gitignore
+
+# Python virtual environment
+.venv
+
+# Python cache
+__pycache__/
+*.pyc
+
+# VS Code settings
+.vscode/
+settings.json
+
+# Batch file (only for local execution)
+run.bat
