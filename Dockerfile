@@ -3,9 +3,9 @@ FROM python:3.11-slim
 
 # 2. Installiere ALLE notwendigen System-Tools (PortAudio UND den Compiler)
 #    (Wir installieren beides in einem Schritt, um das Image effizienter zu halten)
-RUN apt-get update && apt-get install -y \ 
+RUN apt-get update && apt-get install -y \
     portaudio19-dev \
-    build-essential 
+    build-essential
 
 # 3. Setze das Arbeitsverzeichnis im Container
 WORKDIR /app
@@ -17,8 +17,10 @@ RUN pip install -r requirements.txt
 # 5. Kopiere den Rest deines Codes
 COPY . .
 
-# *** NEUE ZEILE: Gehe in den Code-Ordner ***
-WORKDIR /app/"Mode_Recorder"
+# 6. Setze das Arbeitsverzeichnis auf den Ordner mit Leerzeichen
+#    Verwende Anführungszeichen für den Pfad mit Leerzeichen
+WORKDIR "/app/Mode Recorder"
 
-# 6. Definiere den Befehl, der beim Start ausgeführt wird
-CMD ["uvicorn", "mode_recorder:app", "--host", "0.0.0.0", "--port", "10000"]
+# 7. Definiere den Befehl, der beim Start ausgeführt wird
+#    Verwende die $PORT Umgebungsvariable von Render
+CMD uvicorn mode_recorder:app --host 0.0.0.0 --port $PORT
