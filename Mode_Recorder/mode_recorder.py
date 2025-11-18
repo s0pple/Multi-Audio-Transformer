@@ -1,6 +1,61 @@
-import tkinter as tk
-from tkinter import ttk, filedialog, messagebox, simpledialog
+# import tkinter as tk  # Commented out for headless server deployment
+# from tkinter import ttk, filedialog, messagebox, simpledialog  # Commented out for headless server deployment
 import pyaudio
+import wave
+import threading
+import os
+import json
+import numpy as np
+from pydub import AudioSegment
+import sounddevice as sd
+from packaging import version
+from fastapi import FastAPI
+
+# Try to import tkinter for GUI, but allow graceful fallback for headless deployment
+try:
+    import tkinter as tk
+    from tkinter import ttk, filedialog, messagebox, simpledialog
+    TKINTER_AVAILABLE = True
+except ImportError:
+    TKINTER_AVAILABLE = False
+    # Create dummy classes to prevent errors
+    class tk:
+        Tk = None
+        StringVar = None
+        BooleanVar = None
+        IntVar = None
+        Toplevel = None
+        Listbox = None
+        Text = None
+        Scrollbar = None
+        Canvas = None
+        Label = None
+        Button = None
+        Frame = None
+        Radiobutton = None
+        Checkbutton = None
+        Entry = None
+    class ttk:
+        Label = None
+        Button = None
+        Frame = None
+        Notebook = None
+        Scrollbar = None
+    class messagebox:
+        @staticmethod
+        def showinfo(title, message): pass
+        @staticmethod
+        def showerror(title, message): pass
+        @staticmethod
+        def showwarning(title, message): pass
+        @staticmethod
+        def askyesno(title, message): return False
+    class filedialog:
+        @staticmethod
+        def askdirectory(): return None
+    class simpledialog:
+        @staticmethod
+        def askstring(title, prompt): return None
 import wave
 import threading
 import os
@@ -1385,8 +1440,18 @@ Quick Fix: Try the default audio device
         audio = AudioSegment.from_wav(wav_filename)
         audio.export(filename, format="mp3")
         os.remove(wav_filename)
-        messagebox.showinfo("Saved", f"Recording saved as {filename}")
+        if TKINTER_AVAILABLE:
+            messagebox.showinfo("Saved", f"Recording saved as {filename}")
 
 if __name__ == "__main__":
-    app = ModeRecorder()
-    app.root.mainloop()
+    # For web deployment, only run FastAPI
+    # For local development, you can run GUI with: python mode_recorder.py --gui
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] == "--gui" and TKINTER_AVAILABLE:
+        # Run Tkinter GUI (for local development only)
+        app_gui = ModeRecorder()
+        app_gui.root.mainloop()
+    else:
+        # Run FastAPI server (default for deployment)
+        import uvicorn
+        uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
