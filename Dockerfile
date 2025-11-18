@@ -1,8 +1,11 @@
 # 1. Starte mit einem offiziellen Python-Image
 FROM python:3.11-slim
 
-# 2. Installiere die System-Abhängigkeit, die PyAudio braucht
-RUN apt-get update && apt-get install -y portaudio19-dev
+# 2. Installiere ALLE notwendigen System-Tools (PortAudio UND den Compiler)
+#    (Wir installieren beides in einem Schritt, um das Image effizienter zu halten)
+RUN apt-get update && apt-get install -y \ 
+    portaudio19-dev \
+    build-essential 
 
 # 3. Setze das Arbeitsverzeichnis im Container
 WORKDIR /app
