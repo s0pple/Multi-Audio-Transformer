@@ -14,5 +14,8 @@ RUN pip install -r requirements.txt
 # 5. Kopiere den Rest deines Codes
 COPY . .
 
+# *** NEUE ZEILE: Gehe in den Code-Ordner ***
+WORKDIR /app/"Mode_Recorder"
+
 # 6. Definiere den Befehl, der beim Start ausgeführt wird
-CMD ["uvicorn", "Mode Recorder.mode_recorder:app", "--host", "0.0.0.0", "--port", "10000"]
+CMD ["uvicorn", "mode_recorder:app", "--host", "0.0.0.0", "--port", "10000"]
