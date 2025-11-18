@@ -14,13 +14,10 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-# 5. Kopiere den Rest deines Codes
-COPY . .
+# *** KRITISCHE ÄNDERUNG: Kopiere nur den INHALT des Code-Ordners
+# *** (Der Ordner Mode_Recorder liegt im Root des Repos)
+COPY Mode_Recorder/ .
 
-# 6. Setze das Arbeitsverzeichnis auf den Ordner mit Leerzeichen
-#    Verwende Anführungszeichen für den Pfad mit Leerzeichen
-WORKDIR "/app/Mode Recorder"
-
-# 7. Definiere den Befehl, der beim Start ausgeführt wird
-#    Verwende die $PORT Umgebungsvariable von Render
-CMD uvicorn mode_recorder:app --host 0.0.0.0 --port $PORT
+# 6. Definiere den Befehl, der beim Start ausgeführt wird
+#    Da mode_recorder.py jetzt direkt in /app liegt, entfällt der Ordnerpfad.
+CMD ["uvicorn", "mode_recorder:app", "--host", "0.0.0.0", "--port", "10000"]
