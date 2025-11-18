@@ -20,4 +20,4 @@ COPY Mode_Recorder/ .
 
 # 6. Definiere den Befehl, der beim Start ausgeführt wird
 #    Da mode_recorder.py jetzt direkt in /app liegt, entfällt der Ordnerpfad.
-CMD ["uvicorn", "mode_recorder:app", "--host", "0.0.0.0", "--port", "10000"]
+CMD uvicorn mode_recorder:app --host 0.0.0.0 --port 10000
