@@ -1,0 +1,16 @@
+app_name,mouse_activity,hour,day_of_week,mode
+Excel,8,10,1,Work
+VS Code,9,11,1,Work
+Netflix,1,20,1,Relax
+Spotify,2,21,1,Relax
+Outlook,5,9,2,Work
+Teams,4,14,2,Work
+Steam,9,22,5,Gaming
+PowerPoint,6,15,3,Work
+Chrome,3,19,4,Relax
+Word,7,13,2,Work
+VS Code,8,10,2,Work
+Netflix,2,19,5,Relax
+Excel,7,16,3,Work
+Spotify,1,22,6,Relax
+Teams,5,11,4,Work
