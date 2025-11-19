@@ -59,3 +59,19 @@
     *   Erfolgreicher Aufruf des Endpoints via Jupyter Notebook mit API-Key und REST-URL.
     *   Klassifikation von Test-Szenarien (z.B. "Netflix am Abend" -> "Relax") war korrekt.
 *   **Cleanup:** Sofortige Löschung des Endpoints nach dem Videobeweis, um unnötige Kosten zu vermeiden.
+
+## 7. LLMOps mit Azure AI Foundry (Level 3)
+*   **Ziel:** Integration eines Large Language Models (LLM), um die gesammelten Aktivitätsdaten natürlichsprachlich abzufragen ("Chat with your Data").
+*   **Plattform:** Azure AI Foundry (ehemals AI Studio).
+*   **Vorbereitung:**
+    *   Erstellung eines AI Hubs und Projekts (`Multi-Audio-Transformer`).
+    *   Berechtigungen: Erneute Hürde mit RBAC. Der Zugriff auf den neuen "Agent Builder" war gesperrt (`PermissionDenied` für `agents/write`).
+    *   Lösung: Wechsel auf den klassischen **Chat Playground**, der weniger Rechte erfordert.
+*   **Modell-Deployment:**
+    *   Versuch 1: Deployment von `gpt-4o`. Erfolgreich deployed, aber Zugriff im Chat teilweise eingeschränkt.
+    *   Versuch 2: Fallback auf `gpt-35-turbo` (wurde nicht benötigt, da Workaround funktionierte).
+*   **RAG (Retrieval Augmented Generation):**
+    *   Versuch: Nutzung der Funktion "Add your data" zum Hochladen der CSV.
+    *   Fehler: `No Azure AI Search resources found`. Das Erstellen eines Search Services ist im Student-Subscription-Modell oft blockiert oder kostenpflichtig.
+    *   **Lösung (In-Context Learning):** Anwendung von **Prompt Engineering**. Die CSV-Daten wurden direkt in den System-Prompt ("Context") des Modells integriert. Dies simuliert RAG für kleinere Datenmengen effektiv.
+*   **Ergebnis:** Ein funktionierender Chatbot, der Fragen wie "Wann arbeite ich am meisten?" basierend auf den eigenen Log-Daten korrekt beantwortet.
