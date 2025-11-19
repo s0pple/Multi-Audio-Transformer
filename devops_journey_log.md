@@ -33,5 +33,10 @@
 *   **Ursache:** Die Audio-Processing-Bibliotheken (`soundcard`, `pydub`) benötigen laufende Audio-Daemons (PulseAudio) und Codecs (FFmpeg), die im Slim-Image fehlten.
 *   **Finale Lösung:** Dockerfile erweitert um `libpulse-dev` und `ffmpeg`.
 
-## 5. Ergebnis
-Der Service läuft nun in einem maßgeschneiderten Docker-Container, der alle System-Abhängigkeiten kapselt. Die API ist via HTTPS erreichbar.
+## 6. Strategiewechsel & Refactoring (Pivot)
+*   **Problem:** Die Verarbeitung von Audio-Streams (PyAudio/FFmpeg) auf der Free-Tier Cloud-Infrastruktur erwies sich als instabil (Timeouts) und zu ressourcenintensiv für den Scope.
+*   **Entscheidung:** Architekturwechsel von "Heavy Processing" zu "Metadata Controller". Die Cloud-App (Render) dient nun als zentrale Steuerungs-API, die Metadaten empfängt, nicht mehr Rohdaten.
+*   **Aktion:**
+    *   Entfernung von Systemabhängigkeiten (`libpulse`, `ffmpeg`) aus Dockerfile -> schnellerer Build, kleineres Image.
+    *   Anpassung der API-Logik auf Empfang von JSON-Statusdaten statt Audio-Blobs.
+*   **Ergebnis:** Stabiles, schnelles Deployment. Perfekte Basis für die Anbindung von Azure ML (Klassifikation der Metadaten).
