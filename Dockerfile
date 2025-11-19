@@ -1,24 +1,15 @@
-# 1. Starte mit einem offiziellen Python-Image
+# 1. Schlankes Python Image
 FROM python:3.11-slim
 
-# 2. Installiere ALLE notwendigen System-Tools in einem Schritt
-RUN apt-get update && apt-get install -y \
-    portaudio19-dev \
-    build-essential \
-    libpulse-dev \
-    ffmpeg
-
-# 3. Setze das Arbeitsverzeichnis im Container
+# 2. Arbeitsverzeichnis
 WORKDIR /app
 
-# 4. Kopiere die requirements.txt und installiere die Python-Pakete
+# 3. Requirements installieren
 COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# *** KRITISCHE ÄNDERUNG: Kopiere nur den INHALT des Code-Ordners
-# *** (Der Ordner Mode_Recorder liegt im Root des Repos)
+# 4. Code kopieren
 COPY Mode_Recorder/ .
 
-# 6. Definiere den Befehl, der beim Start ausgeführt wird
-#    Da mode_recorder.py jetzt direkt in /app liegt, entfällt der Ordnerpfad.
-CMD uvicorn mode_recorder:app --host 0.0.0.0 --port 10000
+# 5. Starten (angepasst auf den neuen Code)
+CMD ["uvicorn", "mode_recorder:app", "--host", "0.0.0.0", "--port", "10000"]
